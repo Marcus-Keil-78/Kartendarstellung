@@ -3,7 +3,7 @@
 Das Programm erstellt Maker oder und Linien zwischen den eingegebenen Orten
 mithilfe den Python Bibiliotheken Tkinter, TkinterMapView, geocoder und geopy.
 
-Es werden listen für durchdie Eingabe von Orten bzw. GPS-Koordinaten erstellt.
+Es werden listen für durch die Eingabe von Orten bzw. GPS-Koordinaten erstellt.
 Als Ausgabe erfolgt eine Karte mit wahlweise Makern der Eingabe oder und eine
 Linie zwischen mindestens zwei Eingaben.
 Ab zwei eingaben kann die Entfernung von der ersten und letzten Eingabe
@@ -11,3 +11,9 @@ berechnet werden.
 Alle eingaben können zurückgesetz, die angezeigten Maker und Linen
 entfernt werden
 Eine Änderung der Darstellung der Karte ist ebenfalls möglich.
+
+---Programmversion 1.1---
+Es wird nun die Eingabe überprüft, ob diese den Anforderungen erfüllen:
+    - Die Ort Eingabe muß ein String sein
+    - Die Trennung der GPS-Koordinaten müssen durch ein Komma gefolgt
+      von einem Leerzeichen eingegeben werden

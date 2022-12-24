@@ -4,9 +4,11 @@ from tkinter import ttk
 import tkintermapview
 import geocoder
 from geopy import distance
+import re
+from tkinter import messagebox
 
 #Programmversion
-progver="1.0"
+progver="1.1"
 
 #auswahl der Farbe für das gesamten Fenster
 bgcolor="#FFDEAD" #Hintergrundfarbe
@@ -145,17 +147,25 @@ def karte_erstellen(liste_fuer_karte,zusatzangabe,auswahleingabe):
 def add():
     global eingabe_liste_ort
     global eingabe_liste_gps
+    message1='Die Trennung des Längen- und Breitangrad`s muss durch ein Komma gefolgt von einem Leerzeichen sein!\n\n --- Beispiel: 51.2012, 2.0365 ---'
+    message2='Es sollen nur Orte eingegeben werden!'
     
     try:
     #Befüllen der Listen
         if eingabe_auswahl.get() == "GPS-Koordinaten":
-            eingabe_liste_ort=[]
-            eingabe_liste_gps.append(eingabe1_txt.get())
-            karte_erstellen(eingabe_liste_gps,eingabe_zusatz.get(),eingabe_auswahl.get())                
+            if re.search("\d, \d",eingabe1_txt.get()):
+                eingabe_liste_ort=[]
+                eingabe_liste_gps.append(eingabe1_txt.get())
+                karte_erstellen(eingabe_liste_gps,eingabe_zusatz.get(),eingabe_auswahl.get())
+            else:
+                messagebox.showwarning(title="Eingabefehler",message=message1)               
         elif eingabe_auswahl.get() == "Ort":
-            eingabe_liste_gps=[]
-            eingabe_liste_ort.append(eingabe1_txt.get())
-            karte_erstellen(eingabe_liste_ort,eingabe_zusatz.get(),eingabe_auswahl.get())
+            if eingabe1_txt.get().isalpha():
+                eingabe_liste_gps=[]
+                eingabe_liste_ort.append(eingabe1_txt.get())
+                karte_erstellen(eingabe_liste_ort,eingabe_zusatz.get(),eingabe_auswahl.get())
+            else:
+                messagebox.showwarning(title="Eingabefehler",message=message2)
         else:
             None
        
