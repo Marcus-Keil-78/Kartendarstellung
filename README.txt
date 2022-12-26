@@ -17,3 +17,8 @@ Es wird nun die Eingabe überprüft, ob diese den Anforderungen erfüllen:
     - Die Ort Eingabe muß ein String sein
     - Die Trennung der GPS-Koordinaten müssen durch ein Komma gefolgt
       von einem Leerzeichen eingegeben werden
+
+---Programmversion 1.2---
+Es wurden für die Button das Funktionsargument "relief" geändert.
+Desweiteren ein weiterer Button hinzugefügt, der ein neues Fenster
+mit einer genaueren Erklärung öffnet.

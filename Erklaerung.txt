@@ -1,0 +1,25 @@
+1. Was wird eingegeben
+-> Auswahl der eingaben zwischen "Ort" und ""GPS-Koordinaten"
+
+2. Was soll angezeigt werden
+-> Auswahl der Anzeige in der Karte zwischen "Maker", "Linie" oder "Maker und Line"
+
+3. Eingabefeld
+-> Eingabe der Daten, wie sie unter 1 ausgewaehlt wurde
+   --> Ort = Berlin
+   --> GPS-Koordinaten = Breitengrad, Laengengrad | 52.520007, 13.404954
+
+4. Button "Eingabe hinzufuegen"
+-> fuegt die Eingabe im Programm hinzu
+
+5. Kartendarstellung
+-> Auswahl der Anzeige der Ausgabekarte, wird mit "Kartendarstellung aendern" durchgefuehrt
+
+6. Button "Entfernung berechnen"
+-> Es wird die Entfernung (Luftlinie) zwischen der ersten und letzten Eingabe berechnet
+
+7. Button "Zuruecksetzen"
+-> Alle in der Karte befindlichen Marker oder und Linien werden entfernt sowie alle Eingaben geloescht
+
+8. Button "Beenden"
+-> beendet des Programms

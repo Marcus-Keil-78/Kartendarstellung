@@ -8,7 +8,7 @@ import re
 from tkinter import messagebox
 
 #Programmversion
-progver="1.1"
+progver="1.2"
 
 #auswahl der Farbe für das gesamten Fenster
 bgcolor="#FFDEAD" #Hintergrundfarbe
@@ -31,7 +31,8 @@ app.title(f"Kartendarstellung V.{progver}") #Titel für das Programmfenster
 map_ausgabe=tkintermapview.TkinterMapView(app, width=700, height=450,corner_radius=0,relief="ridge")
 map_ausgabe.set_tile_server("https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga",max_zoom=22)
 
-erklaerung=f"--- Eingabe und Anzeige von Orten in einer Karte ---\n\nDie Kartendarstellung ist änderbar, dabei ist 'Google normal' die Standarteinstellung.\nEs können Orte oder GPS-Koordinaten [Eingabebeispiel:71.256235, 21.25458] eingegeben werden.\nDeweiteren kann die Darstellung zwischen Maker oder und Linien ausgewählt werden.\n\nBevor jedoch die beiden vorherigen genannten Auswahlmöglichkieten verändert werden,\nbitte die Karte zurücksetzen!\n\nMit 'Entfernung berechnen' wir die Distanz zwischem der ersten und letzten Eingabe berechnet."
+# Erklärung des Programms
+erklaerung=f"--- Eingabe und Anzeige von Orten in einer Karte ---\n\nDie Kartendarstellung ist änderbar, dabei ist 'Google normal' die Standarteinstellung.\nEs können entweder Orte oder GPS-Koordinaten [Eingabebeispiel:71.256235, 21.25458] eingegeben werden.\nDeweiteren kann die Darstellung zwischen Maker oder und Linien ausgewählt werden.\n\nBevor jedoch die beiden vorherigen genannten Auswahlmöglichkieten verändert werden,\nbitte die Karte zurücksetzen!\n\nMit 'Entfernung berechnen' wir die Distanz zwischem der ersten und letzten Eingabe berechnet."
 
 ## Eingabe / Ausgabe Textfelder
 # Eingabe
@@ -41,7 +42,7 @@ eingabe1_txt=tk.Entry(app,font=(schrift,schriftgröße,schriftart),width = 22)
 ausgabe_entfernung_lbl=tk.Label(app,font=(schrift,schriftgröße,schriftart),
                             width = 18,height=4,relief="sunken",
                             bg="LightSteelBlue",fg=fgcolor)
-ausgabe_entfernung_lbl.configure(text='Benötigt\nwerden mindestens\nzwei Einträge')
+ausgabe_entfernung_lbl.configure(text='Ausgabe der\nEntfernungs-\nberechnung')
 
 # Combobox Eingabe
 eingabe_auswahl = ttk.Combobox(app,font=(schrift,schriftgröße,schriftart),
@@ -103,6 +104,10 @@ eingabe_liste_gps=[]
 ## Funktionen
 # Darstellung der Karte
 def karte_erstellen(liste_fuer_karte,zusatzangabe,auswahleingabe):
+    print("Angabe von karte_erstellen:")
+    print("liste_fuer_karte=>",liste_fuer_karte)
+    print("zusatzangabe=>",zusatzangabe)
+    print("auswahleingabe=>",auswahleingabe)
     
     if auswahleingabe=="Ort":
         if zusatzangabe =="Linie":
@@ -171,6 +176,16 @@ def add():
        
     except:
         pass
+        #messagebox.showerror(title="Programmfehler",message='Fehler bei Funktion "add"')
+    
+    print("Angabe von add Funktion")
+    print("eingabe_liste_ort",eingabe_liste_ort)
+    print("type=",type(eingabe_liste_ort))
+    print("eingabe_liste_gps",eingabe_liste_gps)
+    print("type=",type(eingabe_liste_gps))
+    print("eingabe_zusatz",eingabe_zusatz.get())
+    print("eingabe_auswahl",eingabe_auswahl.get())
+    print()
 
 # Kartendarstellung ändern
 def change_map():
@@ -218,36 +233,66 @@ def reset():
             eingabe_zusatz.set('Maker und Linie')
             eingabe_ansicht.set("Google normal")
         if isinstance(i,tk.Label):
-            ausgabe_entfernung_lbl.configure(text='Benötigt\nwerden mindestens\nzwei Einträge')
+            ausgabe_entfernung_lbl.configure(text='Ausgabe der\nEntfernungs-\nberechnung')
+    
+    #print("eingabe_liste_ort",eingabe_liste_ort)
+    #print("eingabe_liste_gps",eingabe_liste_gps)
+    #print()
+
+# Weiters Fenster für Informationen durch die Datei->Erklaerung.txt
+def info_fenster():
+    app1=tk.Tk()
+    #app1.geometry('500x300')#größe festlegen
+    app1.resizable(width=0, height=0)#größenänderung gesperrt
+    app1.configure(bg=bgcolor)
+    app1.title(f"Weiter Informationen") #Titel für das Programmfenster
+    
+    label_erklaerung=tk.Label(app1,text="\n".join(open("Erklaerung.txt","r").readlines()),
+                          font=(schrift,schriftgröße,schriftart),
+                          bg=bgcolor,fg=fgcolor,
+                          borderwidth = 2).pack(padx=10,pady=20)
+
+    button_close=tk.Button(app1,text="OK - Verstanden",
+                       bg=bgcolor,fg=fgcolor,relief="groove",
+                       font=(schrift,schriftgröße,schriftart),
+                       command=app1.destroy).pack(side='bottom',padx=10,pady=10)
+    
+    app1.mainloop()
     
 # Button
+button_info_fenster=tk.Button(app,text="Weitere\nInformationen",
+                       bg=bgcolor1,fg=fgcolor,relief="groove",
+                       font=(schrift,schriftgröße,schriftart),
+                       command=info_fenster)
+
 button_reset=tk.Button(app,text="Zurücksetzen",
-                       bg="yellow2",fg=fgcolor,relief="ridge",
+                       bg="yellow2",fg=fgcolor,relief="groove",
                        font=(schrift,schriftgröße,schriftart),
                        command=reset)
 
 button_add=tk.Button(app,text="Eingabe\nHinzufügen",
-                     bg="SpringGreen3",fg=fgcolor,relief="ridge",
+                     bg="SpringGreen3",fg=fgcolor,relief="groove",
                      font=(schrift,schriftgröße,schriftart),
                      command=add)
 
 button_change_map=tk.Button(app,text="Kartendarstellung\nändern",
-                     bg="sienna1",fg=fgcolor,relief="ridge",
+                     bg="sienna1",fg=fgcolor,relief="groove",
                      font=(schrift,schriftgröße,schriftart),
                      command=change_map)
 
 button_berrechnung_entfernung=tk.Button(app,text="Entfernung\nberechnen",
-                     bg="LightSteelBlue",fg=fgcolor,relief="ridge",
+                     bg="LightSteelBlue",fg=fgcolor,relief="groove",
                      font=(schrift,schriftgröße,schriftart),
                      command=entfernung_berechnen)
 
 button_close=tk.Button(app,text="Beenden",
-                       bg="OrangeRed",fg=fgcolor,relief="ridge",
+                       bg="OrangeRed",fg=fgcolor,relief="groove",
                        font=(schrift,schriftgröße,schriftart),
                        command=app.destroy)
 
 #Positionierung
 label_erklaerung.place(x=50, y=10)
+button_info_fenster.place(x=1020,y=160)
 label_eingabe_auswahl.place(x=780, y=240)
 eingabe_auswahl.place(x=952, y=275)
 label_eingabe_zusatz.place(x=780, y=310)
@@ -265,4 +310,5 @@ button_reset.place(x=935,y=657)
 button_close.place(x=1070,y=657)
 fuss_lbl.pack(side = 'bottom')
 
+#ausgabe
 app.mainloop()
