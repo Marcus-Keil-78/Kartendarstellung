@@ -8,7 +8,7 @@ import re
 from tkinter import messagebox
 
 #Programmversion
-progver="1.2"
+progver="1.3"
 
 #auswahl der Farbe für das gesamten Fenster
 bgcolor="#FFDEAD" #Hintergrundfarbe
@@ -104,10 +104,6 @@ eingabe_liste_gps=[]
 ## Funktionen
 # Darstellung der Karte
 def karte_erstellen(liste_fuer_karte,zusatzangabe,auswahleingabe):
-    print("Angabe von karte_erstellen:")
-    print("liste_fuer_karte=>",liste_fuer_karte)
-    print("zusatzangabe=>",zusatzangabe)
-    print("auswahleingabe=>",auswahleingabe)
     
     if auswahleingabe=="Ort":
         if zusatzangabe =="Linie":
@@ -178,15 +174,6 @@ def add():
         pass
         #messagebox.showerror(title="Programmfehler",message='Fehler bei Funktion "add"')
     
-    print("Angabe von add Funktion")
-    print("eingabe_liste_ort",eingabe_liste_ort)
-    print("type=",type(eingabe_liste_ort))
-    print("eingabe_liste_gps",eingabe_liste_gps)
-    print("type=",type(eingabe_liste_gps))
-    print("eingabe_zusatz",eingabe_zusatz.get())
-    print("eingabe_auswahl",eingabe_auswahl.get())
-    print()
-
 # Kartendarstellung ändern
 def change_map():
     if eingabe_ansicht.get() == "OpenStreetMap":
@@ -241,23 +228,50 @@ def reset():
 
 # Weiters Fenster für Informationen durch die Datei->Erklaerung.txt
 def info_fenster():
-    app1=tk.Tk()
-    #app1.geometry('500x300')#größe festlegen
-    app1.resizable(width=0, height=0)#größenänderung gesperrt
-    app1.configure(bg=bgcolor)
-    app1.title(f"Weiter Informationen") #Titel für das Programmfenster
-    
-    label_erklaerung=tk.Label(app1,text="\n".join(open("Erklaerung.txt","r").readlines()),
-                          font=(schrift,schriftgröße,schriftart),
-                          bg=bgcolor,fg=fgcolor,
-                          borderwidth = 2).pack(padx=10,pady=20)
+    class TextScrollCombo(ttk.Frame):
 
-    button_close=tk.Button(app1,text="OK - Verstanden",
-                       bg=bgcolor,fg=fgcolor,relief="groove",
-                       font=(schrift,schriftgröße,schriftart),
-                       command=app1.destroy).pack(side='bottom',padx=10,pady=10)
-    
-    app1.mainloop()
+        def __init__(self, *args, **kwargs):
+
+            super().__init__(*args, **kwargs)
+
+        # ensure a consistent GUI size
+            self.grid_propagate(False)
+        # implement stretchability
+            self.grid_rowconfigure(0, weight=1)
+            self.grid_columnconfigure(0, weight=1)
+
+        # create a Text widget
+            self.txt = tk.Text(self)
+            self.txt.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
+
+        # create a Scrollbar and associate it with txt
+            scrollb = ttk.Scrollbar(self, command=self.txt.yview)
+            scrollb.grid(row=0, column=1, sticky='nsew')
+            self.txt['yscrollcommand'] = scrollb.set
+
+    app = tk.Tk()
+    app.geometry('1200x750')#größe festlege
+    app.resizable(width=0, height=0)#größenänderung gesperrt
+    app.configure(bg="#FFDEAD")
+    app.title(f"Zusatzinformation") #Titel für das Programmfenster
+
+    combo = TextScrollCombo(app)
+    combo.pack(fill="both", expand=True,padx=10,pady=10)
+    combo.config(width=600, height=600)
+
+    combo.txt.config(font=("consolas", 12), undo=True, wrap='word')
+    combo.txt.config(borderwidth=3, relief="sunken")
+    combo.txt.insert(tk.END, "\n".join(open("Erklaerung.txt","r").readlines()))
+
+    style = ttk.Style()
+    style.theme_use('clam')
+
+    button_close=tk.Button(app,text="OK - Verstanden",
+                        bg=bgcolor1,fg="black",
+                        font=("Helvetica",12,"bold"),
+                        command=app.destroy).pack(side='bottom',padx=10,pady=10)
+
+    app.mainloop()
     
 # Button
 button_info_fenster=tk.Button(app,text="Weitere\nInformationen",

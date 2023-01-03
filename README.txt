@@ -22,3 +22,6 @@ Es wird nun die Eingabe überprüft, ob diese den Anforderungen erfüllen:
 Es wurden für die Button das Funktionsargument "relief" geändert.
 Desweiteren ein weiterer Button hinzugefügt, der ein neues Fenster
 mit einer genaueren Erklärung öffnet.
+
+---Programmversion 1.3---
+- Zusatzfenster für die Anleitung ist scollbar
